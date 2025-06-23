@@ -42,7 +42,7 @@ pip install -r requirements.txt
 To start the FastAPI application, run the following command:
 
 ```
-uvicorn src.main:app --reload
+uvicorn smart_console_adapter.main:app --reload
 ```
 
 You can then access the API at `http://127.0.0.1:8000`.

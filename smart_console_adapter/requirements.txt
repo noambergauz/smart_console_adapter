@@ -1,3 +1,6 @@
-FastAPI
-pydantic
 httpx
+fastapi
+pydantic
+pydantic-settings
+uvicorn
+python-dotenv
