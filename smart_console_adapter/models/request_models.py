@@ -11,11 +11,7 @@ class LoginRequest(ResourceRequest):
     password: str
 
 
-class ActionRequest(ResourceRequest):
-    sid: str
-
-
-class SetUserRequest(ActionRequest):
+class SetUserRequest(ResourceRequest):
     name: str
     details_level: Optional[str] = "full"
     expiration_days: Optional[int] = 14
