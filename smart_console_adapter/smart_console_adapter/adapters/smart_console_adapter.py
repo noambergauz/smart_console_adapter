@@ -24,8 +24,7 @@ class SmartConsoleAdapter:
             )
             response.raise_for_status()
             data = response.json()
-            self.set_sid(data["sid"])
-            return data
+            return data["sid"]
 
     async def show_users(self):
         """Get the list of users."""

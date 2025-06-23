@@ -1,10 +1,12 @@
 from os import environ
 from http.client import HTTPException
+
 from fastapi import FastAPI, Depends, APIRouter
 
-from smart_console_adapter.adapters.smart_console_adapter import SmartConsoleAdapter
-from smart_console_adapter.models.request_models import LoginRequest, SetUserRequest
-from smart_console_adapter.config.settings import Settings
+from .adapters.smart_console_adapter import SmartConsoleAdapter
+from .models.request_models import LoginRequest, SetUserRequest
+from .config.settings import Settings
+from .decorators import extract_session_id
 
 app = FastAPI(
     title="Smart Console Adapter API",
@@ -36,13 +38,13 @@ async def login(
     credentials: LoginRequest, adapter: SmartConsoleAdapter = Depends(get_adapter)
 ):
     try:
-        response = await adapter.login(credentials.user, credentials.password)
-        return response
+        return await adapter.login(credentials.user, credentials.password)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 
-@app.post("/show-users")
+@app.get("/show-users")
+@extract_session_id
 async def show_users(adapter: SmartConsoleAdapter = Depends(get_adapter)):
     try:
         response = await adapter.show_users()
@@ -52,6 +54,7 @@ async def show_users(adapter: SmartConsoleAdapter = Depends(get_adapter)):
 
 
 @app.post("/set-user")
+@extract_session_id
 async def set_user(
     request: SetUserRequest,
     adapter: SmartConsoleAdapter = Depends(get_adapter),
