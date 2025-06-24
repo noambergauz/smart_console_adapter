@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from .adapters.smart_console_adapter import SmartConsoleAdapter
 from .models.request_models import LoginRequest, SetUserRequest
 from .config.settings import Settings
-from .decorators import extract_session_id
+from .decorators.extract_session_id import extract_session_id
 
 load_dotenv()
 
@@ -25,6 +25,10 @@ app.include_router(router, prefix="/api/v1", tags=["smart-console"])
 api_base_url = getenv("API_BASE_URL")
 domain = getenv("DOMAIN")
 settings = Settings(api_base_url=api_base_url, domain=domain)
+
+print("Settings loaded:")
+print(f"API Base URL: {settings.api_base_url}")
+print(f"Domain: {settings.domain}")
 
 
 def get_adapter():
