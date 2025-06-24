@@ -1,13 +1,13 @@
-from os import getenv
 from http.client import HTTPException
+from os import getenv
 
-from fastapi import FastAPI, Depends, APIRouter
 from dotenv import load_dotenv
+from fastapi import Depends, FastAPI
 
 from .adapters.smart_console_adapter import SmartConsoleAdapter
-from .models.request_models import LoginRequest, SetUserRequest
 from .config.settings import Settings
 from .decorators.extract_session_id import extract_session_id
+from .models.request_models import LoginRequest, SetUserRequest
 
 load_dotenv()
 
@@ -16,11 +16,6 @@ app = FastAPI(
     description="API adapter for Checkpoint's Smart Console",
     version="1.0.0",
 )
-
-router = APIRouter()
-
-app.include_router(router, prefix="/api/v1", tags=["smart-console"])
-
 
 api_base_url = getenv("API_BASE_URL")
 domain = getenv("DOMAIN")

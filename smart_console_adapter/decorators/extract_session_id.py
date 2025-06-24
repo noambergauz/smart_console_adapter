@@ -1,6 +1,7 @@
-from functools import wraps
-from fastapi import Request
 import inspect
+from functools import wraps
+
+from fastapi import Request
 
 
 def extract_session_id(func):
