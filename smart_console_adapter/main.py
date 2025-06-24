@@ -1,12 +1,15 @@
-from os import environ
+from os import getenv
 from http.client import HTTPException
 
 from fastapi import FastAPI, Depends, APIRouter
+from dotenv import load_dotenv
 
 from .adapters.smart_console_adapter import SmartConsoleAdapter
 from .models.request_models import LoginRequest, SetUserRequest
 from .config.settings import Settings
 from .decorators import extract_session_id
+
+load_dotenv()
 
 app = FastAPI(
     title="Smart Console Adapter API",
@@ -19,8 +22,8 @@ router = APIRouter()
 app.include_router(router, prefix="/api/v1", tags=["smart-console"])
 
 
-api_base_url = environ.get("API_BASE_URL")
-domain = environ.get("DOMAIN")
+api_base_url = getenv("API_BASE_URL")
+domain = getenv("DOMAIN")
 settings = Settings(api_base_url=api_base_url, domain=domain)
 
 
