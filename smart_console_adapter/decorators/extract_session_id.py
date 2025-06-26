@@ -19,7 +19,7 @@ def extract_session_id(func):
         adapter = None
 
         for _, param_value in bound_args.arguments.items():
-            if isinstance(param_value, Request):
+            if isinstance(param_value, Request):  # Check if it's a FastAPI Request
                 request = param_value
             elif hasattr(param_value, "set_sid"):  # Check if it's an adapter
                 adapter = param_value

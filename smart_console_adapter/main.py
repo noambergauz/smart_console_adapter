@@ -2,7 +2,7 @@ from http.client import HTTPException
 from os import getenv
 
 from dotenv import load_dotenv
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, Request
 
 from .adapters.smart_console_adapter import SmartConsoleAdapter
 from .config.settings import Settings
@@ -47,7 +47,9 @@ async def login(
 
 @app.get("/show-users")
 @extract_session_id
-async def show_users(adapter: SmartConsoleAdapter = Depends(get_adapter)):
+async def show_users(
+    request: Request, adapter: SmartConsoleAdapter = Depends(get_adapter)
+):
     try:
         response = await adapter.show_users()
         return response
@@ -58,14 +60,15 @@ async def show_users(adapter: SmartConsoleAdapter = Depends(get_adapter)):
 @app.post("/set-user")
 @extract_session_id
 async def set_user(
-    request: SetUserRequest,
+    _: Request,
+    request_data: SetUserRequest,
     adapter: SmartConsoleAdapter = Depends(get_adapter),
 ):
     try:
         response = await adapter.set_user(
-            name=request.name,
-            details_level=request.details_level,
-            expiration_days=request.expiration_days,
+            name=request_data.name,
+            details_level=request_data.details_level,
+            expiration_days=request_data.expiration_days,
         )
         return response
     except Exception as e:
