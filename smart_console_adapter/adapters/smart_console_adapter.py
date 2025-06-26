@@ -16,7 +16,7 @@ class SmartConsoleAdapter:
     async def login(self, user: str, password: str):
         """Login to the Smart Console and return the session ID."""
         url = f"{self.base_url}/login"
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(verify=False) as client:
             response = await client.post(
                 url,
                 json={"user": user, "password": password, "domain": self.domain},
@@ -29,7 +29,7 @@ class SmartConsoleAdapter:
     async def show_users(self):
         """Get the list of users."""
         url = f"{self.base_url}/show-users"
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(verify=False) as client:
             response = await client.get(url, headers=self._headers)
             response.raise_for_status()
             return response.json()
@@ -39,7 +39,7 @@ class SmartConsoleAdapter:
     ):
         """Set user details."""
         url = f"{self.base_url}/set-user"
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(verify=False) as client:
             response = await client.post(
                 url,
                 json={
